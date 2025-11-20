@@ -208,7 +208,7 @@ void Solver::parseInput(const string& filename) {
     }
 }
 
-void Solver::run(const string& input_filename, const string& output_filename) {
+void Solver::run(const string input_filename, const string output_filename) {
     try {
         parseInput(input_filename);
     } catch (const exception& e) {
@@ -218,7 +218,7 @@ void Solver::run(const string& input_filename, const string& output_filename) {
 
     ofstream outfile(output_filename);
     if (!outfile.is_open()) {
-        cerr << "Error: Could not open " << output_filename << " for writing." << endl;
+        cerr << "Error: Could not write " << output_filename << endl;
         return;
     }
 
