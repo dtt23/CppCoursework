@@ -34,13 +34,6 @@ public:
     vector<double> f(const vector<double>& y, const vector<double>& theta, double t) const override;
 };
 
-// --- Problem 9: Bungee Jumper with Nonlinear Damping (2D) ---
-class BungeeJumper : public System {
-public:
-    // y = [y_pos, v], theta = [g, k, m, L0, c]
-    vector<double> f(const vector<double>& y, const vector<double>& theta, double t) const override;
-};
-
 // --- Problem 8: Two-Loop RLC Circuit (4D) ---
 class RLC_Circuit : public System {
 public:

@@ -39,28 +39,6 @@ vector<double> SatelliteAttitude::f(const vector<double>& y, const vector<double
     return {dwx_dt, dwy_dt, dwz_dt};
 }
 
-// Problem 9: Bungee Jumper with Nonlinear Damping [cite: 35]
-vector<double> BungeeJumper::f(const vector<double>& y, const vector<double>& theta, double t) const {
-    double y_pos = y[0];
-    double v = y[1];
-    
-    // theta = [g, k, m, L0, c]
-    double g = theta[0];
-    double k = theta[1];
-    double m = theta[2];
-    double L0 = theta[3];
-    double c = theta[4];
-    
-    double dy_dt = v;
-    
-    double F_spring = -k / m * max(0.0, y_pos - L0); // Spring force
-    double F_drag = -c / m * abs(v) * v;          // Quadratic drag
-    
-    double dv_dt = g + F_spring + F_drag;
-    
-    return {dy_dt, dv_dt};
-}
-
 // Problem 8: Two-Loop RLC Circuit [cite: 32]
 vector<double> RLC_Circuit::f(const vector<double>& y, const vector<double>& theta, double t) const {
     double i1 = y[0];
@@ -169,9 +147,7 @@ void Solver::parseInput(const string& filename) {
         system_ = make_unique<MagnetoMechanical>();
     } else if (system_name_ == "SAT_ATTITUDE") {
         system_ = make_unique<SatelliteAttitude>();
-    } else if (system_name_ == "BUNGEE_JUMPER") {
-        system_ = make_unique<BungeeJumper>();
-    } else if (system_name_ == "RLC_CIRCUIT") {
+    }else if (system_name_ == "RLC_CIRCUIT") {
         system_ = make_unique<RLC_Circuit>();
     } else {
         throw runtime_error("Unknown ODE system: " + system_name_);
