@@ -4,6 +4,7 @@
 
 using namespace std;
 
+//Main function that is run which defines input and output function, initialises the solver object and passes in the input and output files
 int main() {
     string input_file = "parameters.txt";
     string output_file = "output.txt";

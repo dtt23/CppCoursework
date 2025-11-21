@@ -2,9 +2,10 @@
 #include <iostream>
 
 using namespace std;
-// --- System Implementations ---
+// --- Systems ---
 
-// Problem 25: Magneto-Mechanical Oscillator [cite: 87]
+// Problem 25: Magneto-Mechanical Oscillator
+// Method f within the MagnetoMechanical class that takes in the parameters and calculates the derivates wrt time
 vector<double> MagnetoMechanical::f(const vector<double>& y, const vector<double>& theta, double t) const {
     double x = y[0];
     double v = y[1];
@@ -21,7 +22,8 @@ vector<double> MagnetoMechanical::f(const vector<double>& y, const vector<double
     return {dx_dt, dv_dt};
 }
 
-// Problem 21: Satellite Attitude Dynamics (Torque-Free) [cite: 77]
+// Problem 21: Satellite Attitude Dynamics
+// Method f within the SatelliteAttitude class that takes in the parameters and calculates the derivates wrt time
 vector<double> SatelliteAttitude::f(const vector<double>& y, const vector<double>& theta, double t) const {
     double wx = y[0];
     double wy = y[1];
@@ -39,7 +41,8 @@ vector<double> SatelliteAttitude::f(const vector<double>& y, const vector<double
     return {dwx_dt, dwy_dt, dwz_dt};
 }
 
-// Problem 8: Two-Loop RLC Circuit [cite: 32]
+// Problem 8: Two-Loop RLC Circuit
+// Method f within the RLC_Circuit class that takes in the parameters and calculates the derivates wrt time
 vector<double> RLC_Circuit::f(const vector<double>& y, const vector<double>& theta, double t) const {
     double i1 = y[0];
     double i2 = y[1];
@@ -73,9 +76,10 @@ vector<double> RLC_Circuit::f(const vector<double>& y, const vector<double>& the
     return {di1_dt, di2_dt, dq1_dt, dq2_dt};
 }
 
-// --- Integrator Implementations ---
+// --- Integrator ---
 
 // Forward Euler Scheme
+// Method step within the ForwardEuler class that takes in the parameters and calculates the next y value via the Forward Euler method
 vector<double> ForwardEuler::step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const {
     vector<double> dydt = system.f(y_n, theta, t_n);
     vector<double> y_n_plus_1 = y_n;
@@ -87,6 +91,7 @@ vector<double> ForwardEuler::step(const System& system, const vector<double>& y_
 }
 
 // Runge-Kutta 4th Order Scheme
+// Method step within the RungeKutta4 class that takes in the parameters and calculates the next y value via the RungeKutta4 method
 vector<double> RungeKutta4::step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const {
     size_t N = y_n.size();
     
@@ -123,8 +128,8 @@ vector<double> RungeKutta4::step(const System& system, const vector<double>& y_n
     return y_n_plus_1;
 }
 
-// --- Solver Implementations ---
-
+// --- Solver ---
+// Method parseInput within the Solver class that handles the input file, error checks with validation of the values and assigns the Solver attributes appropriately
 void Solver::parseInput(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
@@ -184,6 +189,7 @@ void Solver::parseInput(const string& filename) {
     }
 }
 
+// Method run within the Solver class that handles the calculation of the next y values that can be plotted and writes to the output file
 void Solver::run(const string input_filename, const string output_filename) {
     try {
         parseInput(input_filename);
