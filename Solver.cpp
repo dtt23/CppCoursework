@@ -131,15 +131,16 @@ vector<double> RungeKutta4::step(const System& system, const vector<double>& y_n
 // --- Solver ---
 // Method parseInput within the Solver class that handles the input file, error checks with validation of the values and assigns the Solver attributes appropriately
 void Solver::parseInput(const string& filename) {
+    //Opens the file
     ifstream file(filename);
     if (!file.is_open()) {
         throw runtime_error("Could not open parameters.txt");
     }
 
     string line;
-    map<string, string> keywords;
 
     // Read the first line [ODE] [TimeScheme] [T] [dt]
+    //Stores all the values in appropriate private attributes of the Solver class
     if (getline(file, line)) {
         stringstream ss(line);
         ss >> system_name_ >> integrator_name_ >> T_end_ >> dt_;
@@ -191,6 +192,7 @@ void Solver::parseInput(const string& filename) {
 
 // Method run within the Solver class that handles the calculation of the next y values that can be plotted and writes to the output file
 void Solver::run(const string input_filename, const string output_filename) {
+    //Runs the whole code by first parsing the input
     try {
         parseInput(input_filename);
     } catch (const exception& e) {
@@ -198,6 +200,7 @@ void Solver::run(const string input_filename, const string output_filename) {
         return;
     }
 
+    //Checks if output file is writable
     ofstream outfile(output_filename);
     if (!outfile.is_open()) {
         cerr << "Error: Could not write " << output_filename << endl;
@@ -220,10 +223,11 @@ void Solver::run(const string input_filename, const string output_filename) {
         // Step the solution forward
         y_current = integrator_->step(*system_, y_current, t, dt_, parameters_);
 
-        // Update time
+        // Update time by dt given in the attributes
         t += dt_;
     }
 
+    //Closes the file to release resources
     outfile.close();
-    cout << "Simulation complete. Results written to " << output_filename << endl;
+    cout << "Simulation is complete. The output is written to " << output_filename << endl;
 }
