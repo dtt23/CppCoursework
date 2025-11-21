@@ -1,4 +1,5 @@
 #include "Solver.h"
+#include "Solver.cpp"
 #include <iostream>
 #include <fstream>
 
