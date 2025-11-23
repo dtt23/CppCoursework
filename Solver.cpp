@@ -84,7 +84,7 @@ vector<double> ForwardEuler::step(const System& system, const vector<double>& y_
     vector<double> dydt = system.f(y_n, theta, t_n);
     vector<double> y_n_plus_1 = y_n;
     
-    for (size_t i = 0; i < y_n.size(); ++i) {
+    for (size_t i = 0; i < y_n.size(); i++) {
         y_n_plus_1[i] += dt * dydt[i];
     }
     return y_n_plus_1;
@@ -95,10 +95,10 @@ vector<double> ForwardEuler::step(const System& system, const vector<double>& y_
 vector<double> RungeKutta4::step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const {
     size_t N = y_n.size();
     
-    // Helper function for vector addition/scaling
+    //Function for vector addition/scaling
     auto add_scaled = [&](const vector<double>& a, const vector<double>& b, double scale) {
         vector<double> result(N);
-        for (size_t i = 0; i < N; ++i) {
+        for (size_t i = 0; i < N; i++) {
             result[i] = a[i] + scale * b[i];
         }
         return result;
@@ -121,7 +121,7 @@ vector<double> RungeKutta4::step(const System& system, const vector<double>& y_n
     
     // y_n+1 = y_n + dt/6 * (K1 + 2*K2 + 2*K3 + K4)
     vector<double> y_n_plus_1 = y_n;
-    for (size_t i = 0; i < N; ++i) {
+    for (size_t i = 0; i < N; i++) {
         y_n_plus_1[i] += (dt / 6.0) * (k1[i] + 2.0 * k2[i] + 2.0 * k3[i] + k4[i]);
     }
     
@@ -130,11 +130,11 @@ vector<double> RungeKutta4::step(const System& system, const vector<double>& y_n
 
 // --- Solver ---
 // Method parseInput within the Solver class that handles the input file, error checks with validation of the values and assigns the Solver attributes appropriately
-void Solver::parseInput(const string& filename) {
+void Solver::takeInput(const string& filename) {
     //Opens the file
     ifstream file(filename);
     if (!file.is_open()) {
-        throw runtime_error("Could not open parameters.txt");
+        throw runtime_error("Cannot open parameters.txt");
     }
 
     string line;
@@ -143,28 +143,28 @@ void Solver::parseInput(const string& filename) {
     //Stores all the values in appropriate private attributes of the Solver class
     if (getline(file, line)) {
         stringstream ss(line);
-        ss >> system_name_ >> integrator_name_ >> T_end_ >> dt_;
+        ss >> m_system_name >> m_integrator_name >> m_T_end >> m_dt;
     } else {
-        throw runtime_error("Input file is empty.");
+        throw runtime_error("Input file is empty");
     }
 
     // Process keywords and create objects
-    if (system_name_ == "MAGNETO_MECH") {
-        system_ = make_unique<MagnetoMechanical>();
-    } else if (system_name_ == "SAT_ATTITUDE") {
-        system_ = make_unique<SatelliteAttitude>();
-    }else if (system_name_ == "RLC_CIRCUIT") {
-        system_ = make_unique<RLC_Circuit>();
+    if (m_system_name == "MAGNETO_MECH") {
+        m_system = make_unique<MagnetoMechanical>();
+    } else if (m_system_name == "SAT_ATTITUDE") {
+        m_system = make_unique<SatelliteAttitude>();
+    }else if (m_system_name == "RLC_CIRCUIT") {
+        m_system = make_unique<RLC_Circuit>();
     } else {
-        throw runtime_error("Unknown ODE system: " + system_name_);
+        throw runtime_error("Unknown ODE system: " + m_system_name);
     }
 
-    if (integrator_name_ == "FORWARD_EULER") {
-        integrator_ = make_unique<ForwardEuler>();
-    } else if (integrator_name_ == "RK4") {
-        integrator_ = make_unique<RungeKutta4>();
+    if (m_integrator_name == "FORWARD_EULER") {
+        m_integrator = make_unique<ForwardEuler>();
+    } else if (m_integrator_name == "RK4") {
+        m_integrator = make_unique<RungeKutta4>();
     } else {
-        throw runtime_error("Unknown Time Scheme: " + integrator_name_);
+        throw runtime_error("Unknown Time Scheme: " + m_integrator_name);
     }
 
     // Read second line (Parameters)
@@ -172,10 +172,10 @@ void Solver::parseInput(const string& filename) {
         stringstream ss(line);
         double param;
         while (ss >> param) {
-            parameters_.push_back(param);
+            m_parameters.push_back(param);
         }
     } else {
-        throw runtime_error("Missing parameter line in input file.");
+        throw runtime_error("Missing parameter line in input file");
     }
 
     // Read third line (Initial Conditions)
@@ -183,10 +183,10 @@ void Solver::parseInput(const string& filename) {
         stringstream ss(line);
         double ic;
         while (ss >> ic) {
-            initial_conditions_.push_back(ic);
+            m_initial_conditions.push_back(ic);
         }
     } else {
-        throw runtime_error("Missing initial conditions line in input file.");
+        throw runtime_error("Missing initial conditions line in input file");
     }
 }
 
@@ -194,7 +194,7 @@ void Solver::parseInput(const string& filename) {
 void Solver::run(const string input_filename, const string output_filename) {
     //Runs the whole code by first parsing the input
     try {
-        parseInput(input_filename);
+        takeInput(input_filename);
     } catch (const exception& e) {
         cerr << "Error during setup: " << e.what() << endl;
         return;
@@ -209,11 +209,11 @@ void Solver::run(const string input_filename, const string output_filename) {
 
     // Time integration setup
     double t = 0.0;
-    vector<double> y_current = initial_conditions_;
+    vector<double> y_current = m_initial_conditions;
     
     // Main Time-Stepping Loop
-    while (t <= T_end_) {
-        // Output current state: [t] [x0_t] [x1_t] ...
+    while (t <= m_T_end) {
+        // Output current state: [t] [x0_t] [x1_t] ..
         outfile << t;
         for (double val : y_current) {
             outfile << " " << val;
@@ -221,10 +221,10 @@ void Solver::run(const string input_filename, const string output_filename) {
         outfile << "\n";
 
         // Step the solution forward
-        y_current = integrator_->step(*system_, y_current, t, dt_, parameters_);
+        y_current = m_integrator->step(*m_system, y_current, t, m_dt, m_parameters);
 
         // Update time by dt given in the attributes
-        t += dt_;
+        t += m_dt;
     }
 
     //Closes the file to release resources

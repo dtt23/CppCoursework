@@ -9,7 +9,7 @@
 #include <map>
 
 using namespace std;
-// --- 1. System Base Class ---
+// --- System Base Class ---
 // y' = f(y, theta, t)
 
 class System {
@@ -44,7 +44,7 @@ public:
 };
 
 
-// --- 2. Integrator Base Class ---
+// --- Integrator Base Class ---
 
 class Integrator {
 public:
@@ -64,22 +64,22 @@ public:
     vector<double> step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const override;
 };
 
-// --- 3. Solver Class ---
+// --- Solver Class ---
 
 class Solver {
-//Private attributes and method parseInput
+//Private attributes and method takeInput
 private:
-    unique_ptr<System> system_;
-    unique_ptr<Integrator> integrator_;
-    vector<double> initial_conditions_;
-    vector<double> parameters_;
-    double T_end_;
-    double dt_;
-    string system_name_;
-    string integrator_name_;
+    unique_ptr<System> m_system;
+    unique_ptr<Integrator> m_integrator;
+    vector<double> m_initial_conditions;
+    vector<double> m_parameters;
+    double m_T_end;
+    double m_dt;
+    string m_system_name;
+    string m_integrator_name;
 
     // Helper to read and parse the input file
-    void parseInput(const string& filename);
+    void takeInput(const string& filename);
 //Public run method that can be accessed anywhere 
 public:
     Solver() = default;

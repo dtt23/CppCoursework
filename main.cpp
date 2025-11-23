@@ -10,7 +10,7 @@ using namespace std;
 int main() {
     //Stores the name of the input and output file
     string input_file = "parameters.txt";
-    string output_file = "output2.txt";
+    string output_file = "output.txt";
     
     // 2. Instantiate and run the solver in which the output is then saved to that speicfic file
     Solver solver;
