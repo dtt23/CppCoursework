@@ -144,6 +144,12 @@ void Solver::takeInput(const string& filename) {
     if (getline(file, line)) {
         stringstream ss(line);
         ss >> m_system_name >> m_integrator_name >> m_T_end >> m_dt;
+        cout << endl;
+        cout << "The system you are using is: " << m_system_name << endl;
+        cout << "The integrator you are using is: " << m_integrator_name << endl;
+        cout << "The time that it is being run for is between 0 and " << m_T_end << " seconds." << endl;
+        cout << "It is being stepped by " << m_dt << " seconds." << endl;
+        cout << endl;
     } else {
         throw runtime_error("Input file is empty");
     }
