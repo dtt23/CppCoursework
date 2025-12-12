@@ -2,7 +2,7 @@
 #include <iostream>
 
 using namespace std;
-// --- Systems ---
+// Systems
 
 // Problem 25: Magneto-Mechanical Oscillator
 // Method f within the MagnetoMechanical class that takes in the parameters and calculates the derivates wrt time

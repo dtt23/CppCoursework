@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// --- Integrator ---
+// Integrator
 
 // Forward Euler Scheme
 // Method step within the ForwardEuler class that takes in the parameters and calculates the next y value via the Forward Euler method

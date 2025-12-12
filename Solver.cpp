@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// --- Solver ---
+// Solver
 
 // Method parseInput within the Solver class that handles the input file, error checks with validation of the values and assigns the Solver attributes appropriately
 void Solver::takeInput(const string& filename) {
