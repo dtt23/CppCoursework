@@ -23,21 +23,21 @@ public:
     virtual ~System() = default;
 };
 
-// --- Child class of the main System class: Problem 25: Magneto-Mechanical Oscillator (2D) ---
+// --- Child class of the main System class: Problem 25: Magneto-Mechanical Oscillator (2D)
 class MagnetoMechanical : public System {
 public:
     // y = [x, v], theta = [gamma, omega0, alpha, c]
     vector<double> f(const vector<double>& y, const vector<double>& theta, double t) const override;
 };
 
-// --- Child class of the main System class: Problem 21: Satellite Attitude Dynamics (3D) ---
+// --- Child class of the main System class: Problem 21: Satellite Attitude Dynamics (3D)
 class SatelliteAttitude : public System {
 public:
     // y = [wx, wy, wz], theta = [Ix, Iy, Iz]
     vector<double> f(const vector<double>& y, const vector<double>& theta, double t) const override;
 };
 
-// --- Child class of the main System class: Problem 8: Two-Loop RLC Circuit (4D) ---
+// --- Child class of the main System class: Problem 8: Two-Loop RLC Circuit (4D)
 class RLC_Circuit : public System {
 public:
     // y = [i1, i2, q1, q2], theta = [L1, R1, C1, M, L2, R2, C2] + Vin(t)

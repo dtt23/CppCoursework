@@ -18,19 +18,21 @@ using namespace std;
 // Integrator Base Class
 class Integrator {
 public:
-    // Calculates y_n+1 from y_n
+    // Advance the system state by one time step: compute y_{n+1} from y_n
     virtual vector<double> step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const = 0;
     virtual ~Integrator() = default;
 };
 //Child class of the main Integrator class: overrides the method step
 class ForwardEuler : public Integrator {
 public:
+    // Perform one integration step using the Forward Euler method
     vector<double> step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const override;
 };
 
 //Child class of the main Integrator class: overrides the method step
 class RungeKutta4 : public Integrator {
 public:
+    // Perform one integration step using classical fourth-order Runge–Kutta (RK4)
     vector<double> step(const System& system, const vector<double>& y_n, double t_n, double dt, const vector<double>& theta) const override;
 };
 

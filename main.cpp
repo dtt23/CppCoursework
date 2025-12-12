@@ -1,5 +1,5 @@
 // Necessary includes to run the program
-#include "Solver.h"
+#include "solver.h"
 #include <iostream>
 #include <fstream>
 
@@ -8,6 +8,7 @@ using namespace std;
 // Main function that is run which defines input and output function, initialises the solver object and passes in the input and output files
 // This main function specifically has all the objects needed to reproduce the graphs in the report
 int main() {
+    //Stores the input and output files in separate strings if you want to instantiate multiple objects of the solver
     string input_file;
     string output_file;
     
@@ -17,7 +18,7 @@ int main() {
     // Input files are named according to their ODE and integrator and can be renamed into parameters.txt and changed below - can reproduce the graphs in the report
     input_file = "MAG_MECH_RK4.txt";
 
-    // Output file name can be changed below and will appear in same location
+    // Output file name can be changed below and will appear in same folder
     output_file = "output_magRK3.txt";
     solver.run(input_file, output_file);
 

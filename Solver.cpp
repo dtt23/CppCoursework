@@ -30,7 +30,7 @@ void Solver::takeInput(const string& filename) {
         throw runtime_error("Input file is empty");
     }
 
-    // Process keywords and create objects
+    // Instantiate the selected ODE system based on the configured system name
     if (m_system_name == "MAGNETO_MECH") {
         m_system = make_unique<MagnetoMechanical>();
     } else if (m_system_name == "SAT_ATTITUDE") {
@@ -41,6 +41,7 @@ void Solver::takeInput(const string& filename) {
         throw runtime_error("Unknown ODE system: " + m_system_name);
     }
 
+    // Instantiate the selected time integrator based on the configured scheme name
     if (m_integrator_name == "FORWARD_EULER") {
         m_integrator = make_unique<ForwardEuler>();
     } else if (m_integrator_name == "RK4") {
@@ -49,7 +50,7 @@ void Solver::takeInput(const string& filename) {
         throw runtime_error("Unknown Time Scheme: " + m_integrator_name);
     }
 
-    // Read second line (Parameters)
+    // Read second line (Parameters) and add it to the end of m_parameters attribute
     if (getline(file, line)) {
         stringstream ss(line);
         double param;
@@ -60,7 +61,7 @@ void Solver::takeInput(const string& filename) {
         throw runtime_error("Missing parameter line in input file");
     }
 
-    // Read third line (Initial Conditions)
+    // Read third line (Initial Conditions) and add it to the m_initial conditions attribute
     if (getline(file, line)) {
         stringstream ss(line);
         double ic;
@@ -89,11 +90,11 @@ void Solver::run(const string input_filename, const string output_filename) {
         return;
     }
 
-    // Time integration setup
+    // Time integration setup by setting the current y to the initial conditions
     double t = 0.0;
     vector<double> y_current = m_initial_conditions;
     
-    // Main Time-Stepping Loop
+    // Main Time-Stepping Loop and iterates through this time until the end
     while (t <= m_T_end) {
         // Output current state: [t] [x0_t] [x1_t] ..
         outfile << t;
