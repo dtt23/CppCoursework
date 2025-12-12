@@ -3,6 +3,7 @@
 
 using namespace std;
 // --- Systems ---
+
 // Problem 25: Magneto-Mechanical Oscillator
 // Method f within the MagnetoMechanical class that takes in the parameters and calculates the derivates wrt time
 vector<double> MagnetoMechanical::f(const vector<double>& y, const vector<double>& theta, double t) const {
