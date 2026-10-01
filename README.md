@@ -1,0 +1,1 @@
+This is the Cpp coursework that needed to solve systems of ODEs in efficient time. The specific problems chosen were at the most difficult end of the spectrum and the associated MATLAB/Python plots from the txt files represent the solutions to such problems.
